@@ -3,14 +3,92 @@
   <h1>
     Welcome to {{ title }}!
   </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+  <button class="btn btn-primary" (click)="show=!show">{{ show ? 'Hide Form' : 'New Task' }}</button>
 </div>
-<div class="container" style="text-align:center">
-  <h1>Im ready bro!!</h1>
-  <ul class="list-group">
-    <li class="list-group-item active">My Tasks</li>
-    <div *ngFor="let task of tasks">
-      <li class="list-group-item">{{ task.title }}</li>
+<br>
+<!-- <p>{{ newTask | json }}</p> -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="myForm" *ngIf="show">
+        <span class="text-success">{{ message }}</span>
+        <form (submit)="onSubmit()">
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control" name="newTask.title" [(ngModel)]="newTask.title" placeholder="Task task">
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <input type="text" class="form-control" name="newTask.description" [(ngModel)]="newTask.description"
+              placeholder="Task description">
+          </div>
+          <div class="form-group">
+            <p><input type="checkbox" name="newTask.completed" [(ngModel)]="newTask.completed"> Is completed?</p>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      <br>
+      <div class="myForm" *ngIf="EditShow">
+        Edit:
+        <span class="text-success">{{ message }}</span>
+        <form (submit)="update()">
+          <div class="form-group">
+            <input type="text" class="form-control" name="updateTask.title" [(ngModel)]="updateTask.title" placeholder="Task task">
+          </div>
+
+          <div class="form-group">
+            <input type="text" class="form-control" name="updateTask.description" [(ngModel)]="updateTask.description"
+              placeholder="Task description">
+          </div>
+          <div class="form-group">
+            <p><input type="checkbox" name="updateTask.completed" [(ngModel)]="updateTask.completed"> Is completed?</p>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <button type="submit" class="btn btn-primary btn-sm">Update</button>
+            </div>
+
+            <div class="col-md-6 text-right">
+              <button class="btn btn-warning btn-sm text-white" (click)="EditShow=!EditShow">Hide Form</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-  </ul>
+
+    <div class="col-md-9">
+      <table class="table table-fixed">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+
+        <tbody *ngFor="let task of tasks">
+          <tr>
+            <td>{{ task.title }}</td>
+            <td>{{ task.description }}</td>
+            <td *ngIf="task.completed; else Incompleted">
+              <span class="text-success">Completed</span>
+            </td>
+            <ng-template #Incompleted>
+              <td>
+                <span class="text-warning">InCompleted</span>
+              </td>
+            </ng-template>
+            <td>
+              <a class="btn btn-warning btn-sm" (click)="showForm(task)">Edit</a>
+              <a class="btn btn-danger btn-sm" (click)="delete(task)">Delete</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

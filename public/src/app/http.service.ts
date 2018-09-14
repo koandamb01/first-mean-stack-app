@@ -16,24 +16,12 @@ export class HttpService {
     return this._http.get('/task/' + id);
   }
 
-  postTask() {
-    let body = {
-      "title": "Angular first Restful API post",
-      "description": "This shit is lit!",
-      "completed": false,
-    }
-
-    return this._http.post('/task', body);
+  postTask(newTask) {
+    return this._http.post('/task', newTask);
   }
 
-  putTask(id) {
-    let updateBody = {
-      "title": "Angular first Upates",
-      "description": "This shit is working!",
-      "completed": true,
-    }
-
-    return this._http.put('/task/' + id, updateBody);
+  putTask(id, updateTask) {
+    return this._http.put('/task/' + id, updateTask);
   }
 
   deleteTask(id) {

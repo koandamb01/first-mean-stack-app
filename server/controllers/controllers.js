@@ -30,7 +30,7 @@ module.exports = {
     },
 
     post: (req, res) => {
-        Task.create(req.body, (err, tasks) => {
+        Task.create(req.body, (err, task) => {
             if (err) {
                 console.log("Returned error", err);
                 // respond with JSON
@@ -38,7 +38,7 @@ module.exports = {
             }
             else {
                 // respond with JSON
-                res.json({ message: "Success", data: tasks })
+                res.json({ message: "Success", data: task })
             }
         });
     },

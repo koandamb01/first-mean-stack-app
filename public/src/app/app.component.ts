@@ -2,30 +2,59 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from './http.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Restful Tasks API';
-  tasks: string[];
-  constructor(private _httpService: HttpService) { }
+    title = 'Restful Tasks API';
+    tasks: string[];
+    newTask: any;
+    updateTask: any;
+    message: string;
+    EditShow = false;
+    constructor(private _httpService: HttpService) { }
 
-  ngOnInit() {
-    let initObserve = this._httpService.getTasks();
-    initObserve.subscribe(response => {
-      this.tasks = response['data'];
-    });
-  }
+    ngOnInit() {
+        let initObserve = this._httpService.getTasks();
+        initObserve.subscribe(response => {
+            this.tasks = response['data'];
+        });
+
+        this.newTask = {
+            'title': '',
+            'description': '',
+            'completed': false
+        }
+    }
+
+    onSubmit() {
+        let observe = this._httpService.postTask(this.newTask);
+        observe.subscribe(response => {
+            console.log(response);
+            this.message = response['message'];
+            this.ngOnInit()
+        });
+    }
+
+    showForm(task) {
+        this.EditShow = true;
+        this.updateTask = task;
+    }
+
+    update() {
+        let observe = this._httpService.putTask(this.updateTask._id, this.updateTask);
+        observe.subscribe(response => {
+            this.message = response['message'];
+            this.EditShow = false;
+            this.ngOnInit()
+        });
+    }
+
+    delete(task) {
+        let observe = this._httpService.deleteTask(task._id);
+        observe.subscribe(response => {
+            this.ngOnInit()
+        });
+    }
 }
-
-
-
-
-
-// this._httpService.getTasks();
-    // this._httpService.getTasks() can also be call here
-    // this._httpService.getTask('5b9acd5eac805216956bf094');
-    // this._httpService.postTask();
-    // this._httpService.putTask('5b9acd5eac805216956bf094');
-    // this._httpService.deleteTask('5b9acd5eac805216956bf094');
