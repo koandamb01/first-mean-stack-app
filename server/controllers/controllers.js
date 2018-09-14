@@ -16,7 +16,7 @@ module.exports = {
     },
 
     task_by_id: (req, res) => {
-        Task.findOne({ _id: req.params.id }, (err, tasks) => {
+        Task.findOne({ _id: req.params.id }, (err, task) => {
             if (err) {
                 console.log("Returned error", err);
                 // respond with JSON
@@ -24,7 +24,7 @@ module.exports = {
             }
             else {
                 // respond with JSON
-                res.json({ message: "Success", data: tasks })
+                res.json({ message: "Success", data: task })
             }
         });
     },
@@ -44,7 +44,7 @@ module.exports = {
     },
 
     put: (req, res) => {
-        Task.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }, (err, tasks) => {
+        Task.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }, (err, task) => {
             if (err) {
                 console.log("Returned error", err);
                 // respond with JSON
@@ -52,7 +52,7 @@ module.exports = {
             }
             else {
                 // respond with JSON
-                res.json({ message: "Success", data: tasks })
+                res.json({ message: "Success", data: task })
             }
         });
     },

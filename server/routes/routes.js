@@ -5,7 +5,7 @@ module.exports = (app) => {
         Controllers.tasks(req, res);
     });
 
-    app.get('/tasks/:id', (req, res) => {
+    app.get('/task/:id', (req, res) => {
         Controllers.task_by_id(req, res);
     });
 
