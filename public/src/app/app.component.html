@@ -3,23 +3,42 @@
   <h1>
     Welcome to {{ title }}!
   </h1>
-  <button class="btn btn-primary" (click)="show=!show">{{ show ? 'Hide Form' : 'New Task' }}</button>
 </div>
 <br>
-<!-- <p>{{ newTask | json }}</p> -->
+
 <div class="container">
   <div class="row">
-    <div class="col-md-3">
-      <div class="myForm" *ngIf="show">
+    <div class="col-md-8">
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center active">
+          List of Tasks
+          <span class="badge badge-pill">
+            <button class="btn btn-success" (click)="show=!show; EditShow=false; DetailShow=false">{{ show ? 'Hide
+              Form' : 'New Task' }}</button>
+          </span>
+        </li>
+        <div style="height: 300px; overflow: scroll;">
+          <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let task of tasks">
+            {{ task.title }}
+            <span class="badge badge-pill">
+              <button class="btn btn-warning btn-sm" (click)="showForm(task)">Edit</button>
+              <button class="btn btn-primary btn-sm" (click)="TaskDetail(task)">Detail</button>
+            </span>
+          </li>
+        </div>
+      </ul>
+    </div>
+
+    <div class="col-md-3" *ngIf="show">
+      <div class="myForm">
+        New:
         <span class="text-success">{{ message }}</span>
         <form (submit)="onSubmit()">
           <div class="form-group">
-            <label>Title</label>
             <input type="text" class="form-control" name="newTask.title" [(ngModel)]="newTask.title" placeholder="Task task">
           </div>
 
           <div class="form-group">
-            <label>Description</label>
             <input type="text" class="form-control" name="newTask.description" [(ngModel)]="newTask.description"
               placeholder="Task description">
           </div>
@@ -29,8 +48,10 @@
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>
-      <br>
-      <div class="myForm" *ngIf="EditShow">
+    </div>
+
+    <div class="col-md-3" *ngIf="EditShow">
+      <div class="myForm">
         Edit:
         <span class="text-success">{{ message }}</span>
         <form (submit)="update()">
@@ -59,36 +80,6 @@
       </div>
     </div>
 
-    <div class="col-md-9">
-      <table class="table table-fixed">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Description</th>
-            <th scope="col">Status</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-
-        <tbody *ngFor="let task of tasks">
-          <tr>
-            <td>{{ task.title }}</td>
-            <td>{{ task.description }}</td>
-            <td *ngIf="task.completed; else Incompleted">
-              <span class="text-success">Completed</span>
-            </td>
-            <ng-template #Incompleted>
-              <td>
-                <span class="text-warning">InCompleted</span>
-              </td>
-            </ng-template>
-            <td>
-              <a class="btn btn-warning btn-sm" (click)="showForm(task)">Edit</a>
-              <a class="btn btn-danger btn-sm" (click)="delete(task)">Delete</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <app-task *ngIf="taskDetail && DetailShow" [taskToShow]="taskDetail"></app-task>
   </div>
 </div>

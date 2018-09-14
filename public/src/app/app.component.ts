@@ -13,12 +13,16 @@ export class AppComponent implements OnInit {
     updateTask: any;
     message: string;
     EditShow = false;
+    DetailShow = false;
+    show = false;
+    taskDetail: any;
     constructor(private _httpService: HttpService) { }
 
     ngOnInit() {
         let initObserve = this._httpService.getTasks();
         initObserve.subscribe(response => {
             this.tasks = response['data'];
+            this.message = '';
         });
 
         this.newTask = {
@@ -39,7 +43,9 @@ export class AppComponent implements OnInit {
 
     showForm(task) {
         this.EditShow = true;
-        this.updateTask = task;
+        this.show = false;
+        this.DetailShow = false;
+        this.updateTask = task
     }
 
     update() {
@@ -56,5 +62,13 @@ export class AppComponent implements OnInit {
         observe.subscribe(response => {
             this.ngOnInit()
         });
+    }
+
+
+    TaskDetail(task) {
+        this.show = false;
+        this.EditShow = false;
+        this.DetailShow = true;
+        this.taskDetail = task;
     }
 }

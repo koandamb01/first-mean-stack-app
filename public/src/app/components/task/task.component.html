@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="card-header">
+    {{ taskToShow.title }}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Description</h5>
+    <p class="card-text">{{ taskToShow.description }}</p>
+
+    <a class="btn btn-warning text-white" *ngIf="!taskToShow.completed; else Completed">Task InCompleted</a>
+    <ng-template #Completed>
+      <a class="btn btn-success text-white">Task Completed</a>
+    </ng-template>
+  </div>
+</div>
